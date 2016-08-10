@@ -137,6 +137,7 @@ void loop()
                   digitalWrite(Relay_1,false);
                   digitalWrite(Relay_2,false);}
                 CAN.sendMsgBuf(ID_Local,0,8,MsgUpEEprom);
+                 ISR_Blink() ;
                 }
             }
 
