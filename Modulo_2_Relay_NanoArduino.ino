@@ -98,8 +98,8 @@ void loop()
 
        if( canId==0xFF){// MAster  broadcast 0xFF para que todos los ID LOCALEs publiquen su info
             Led_mensaje_recibido_blink();
-            CAN.sendMsgBuf(ID_Local,0,8,MsgUpEEprom);
-          }
+            CAN.sendMsgBuf(ID_Local,0,8,MsgUpEEprom);}
+       else{        
             if( canId == ID_Master){  // su el Master conside con el emisor
               Led_mensaje_recibido_blink();
               if(0x00==MsgLeido[0]){    //si el control es 00 solo envia su info el local
@@ -133,7 +133,9 @@ void loop()
               CAN.sendMsgBuf(ID_Local,0,8,MsgUpEEprom);
               Led_grabacion_3();}
             }
-      interrupts();                 // Autoriza las interrupciones
+     
+       }
+        interrupts();                 // Autoriza las interrupciones
       }
         
     }
