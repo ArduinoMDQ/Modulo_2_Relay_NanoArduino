@@ -11,7 +11,7 @@ const int Relay_2=A5;//digital
 const int Acs712_1=A6;//solo ADC
 const int Acs712_2=A7;//solo ADC
 
-boolean ledON=1;
+//boolean ledON=1;
 
 unsigned char canId;
 unsigned char ID_Local;
@@ -43,9 +43,9 @@ void setup()
 {
     Serial.begin(9600);
    
-    Timer1.initialize(3000000);         // Dispara cada 250 ms
-    Timer1.attachInterrupt(ISR_Blink); // Activa la interrupcion y la asocia a ISR_Blink
-    noInterrupts();             // Suspende las interrupciones
+   //Timer1.initialize(3000000);         // Dispara cada 250 ms
+   // Timer1.attachInterrupt(ISR_Blink); // Activa la interrupcion y la asocia a ISR_Blink
+   // noInterrupts();             // Suspende las interrupciones
   
     ID_Local= EEPROM.read(0x00);    // almaceno el Id del receptor
     ID_Master= EEPROM.read(0x01);
@@ -53,7 +53,7 @@ void setup()
     MsgUpEEprom[1]=ID_Master;
     
     pinMode(LED,OUTPUT);
-    digitalWrite(LED,false);
+   // digitalWrite(LED,false);
     pinMode(Relay_1,OUTPUT);
     pinMode(Relay_2,OUTPUT);
     pinMode(Acs712_1,INPUT);
@@ -75,7 +75,7 @@ START_INIT:
           Led_CanFail();
           goto START_INIT;
           }
- interrupts();                 // Autoriza las interrupciones
+ //interrupts();                 // Autoriza las interrupciones
 }
 
 void loop()
@@ -85,7 +85,7 @@ void loop()
       
     if(!digitalRead(interrupcion))            // check if data coming
     
-    {     noInterrupts();               // Suspende las interrupciones
+    {    // noInterrupts();               // Suspende las interrupciones
           CAN.readMsgBuf(&len, buf);    // leo el mensaje recibido
           canId = CAN.getCanId();       // almaceno el Id del emisor
           ID_Local= EEPROM.read(0x00);    // leo el Id del receptor de la EEPROM
@@ -153,7 +153,7 @@ void loop()
             }
      
        }
-        interrupts();                 // Autoriza las interrupciones
+      //  interrupts();                 // Autoriza las interrupciones
       }
         
     }
@@ -179,6 +179,7 @@ void loop()
           digitalWrite(LED,true);
           delay(50);
           digitalWrite(LED,false);  
+           delay(50);
   }
 
  void Led_0xFF_CanID(){
@@ -197,17 +198,18 @@ void loop()
                 digitalWrite(LED,true);
                 delay(50);
                 digitalWrite(LED,false);
+                  delay(50);
  }
 
  void Led_CanUpOK(){
            digitalWrite(LED,true);
-           delay(100);
+           delay(200);
            digitalWrite(LED,false);
-           delay(100);
+           delay(200);
            digitalWrite(LED,true);
-           delay(100);
+           delay(200);
            digitalWrite(LED,false);
-  
+           delay(200);
  }
 
  void Led_CanFail(){
@@ -227,31 +229,13 @@ void loop()
 
 void ISR_Blink() {
  
-   acs_1=analogRead(Acs712_1);
+  acs_1=analogRead(Acs712_1);
   MsgAcs712[0]= acs_1;
-   acs_2=analogRead(Acs712_2);
-   MsgAcs712[1]= acs_2;
-   digitalWrite(LED,true);
-   delay(20);
-   digitalWrite(LED,false);
-   CAN.sendMsgBuf(ID_Local,0,8,MsgAcs712);
+  acs_2=analogRead(Acs712_2);
+  MsgAcs712[1]= acs_2;
+  CAN.sendMsgBuf(ID_Local,0,8,MsgAcs712);
+ 
  }
-
-
-
-void ledColor(char var) {
- switch (var) {
-   case 0x01:
-       digitalWrite(LED,true);
-     break;
-    
-    case 0x00:
-       digitalWrite(LED,false);
-     break;
-  default:
-  break;
- }
-}
 
 /*********************************************************************************************************
   END FILE
