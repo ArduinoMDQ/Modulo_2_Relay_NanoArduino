@@ -1,4 +1,4 @@
-#include <TimerOne.h>
+//#include <TimerOne.h>
 #include <SPI.h>
 #include <mcp_can.h>
 #include <EEPROM.h>
@@ -6,8 +6,8 @@
 const int SPI_CS_PIN = 10;//pin 9 en modulo 1 relay Atmega328p
 const int interrupcion = 9;//pin 5 en modulo 1 relay Atmega328p
 const int LED=2;//pin 8 en modulo 1 relay Atmega328p
-const int Relay_1=A4;//digital
-const int Relay_2=A5;//digital
+const int Relay_1=A0;//digital
+const int Relay_2=A2;//digital
 const int Acs712_1=A6;//solo ADC
 const int Acs712_2=A7;//solo ADC
 
@@ -43,9 +43,9 @@ void setup()
 {
     Serial.begin(9600);
    
-    Timer1.initialize(3000000);         // Dispara cada 250 ms
-    Timer1.attachInterrupt(ISR_Blink); // Activa la interrupcion y la asocia a ISR_Blink
-    noInterrupts();               // Suspende las interrupciones
+  //  Timer1.initialize(3000000);         // Dispara cada 250 ms
+  //  Timer1.attachInterrupt(ISR_Blink); // Activa la interrupcion y la asocia a ISR_Blink
+  //  noInterrupts();               // Suspende las interrupciones
     EEPROM.write(0x00,ID_Local);// escribe en la dir 0x00 el id del dispositivo LOCAL
     EEPROM.write(0x01,ID_Master);// escribe en la dir 0x01 el id del MASTER controlador
     ID_Local= EEPROM.read(0x00);    // almaceno el Id del receptor
@@ -54,14 +54,32 @@ void setup()
     MsgUpEEprom[1]=ID_Master;
     
     pinMode(LED,OUTPUT);
-    digitalWrite(LED,false);
+    digitalWrite(LED,true);
+    
     pinMode(Relay_1,OUTPUT);
     pinMode(Relay_2,OUTPUT);
     pinMode(Acs712_1,INPUT);
     pinMode(Acs712_2,INPUT);
+    delay(100);
+    digitalWrite(Relay_1,false);
+    digitalWrite(LED,false);
+    delay(500);
     digitalWrite(Relay_1,true);
+    digitalWrite(LED,true);
+    delay(1000);
     digitalWrite(Relay_2,true);
+    digitalWrite(LED,false);
+    delay(250);
+    digitalWrite(LED,true);
+   
+    delay(200);
+    digitalWrite(LED,false);
+ 
+    delay(250);
+    digitalWrite(LED,true);
+    digitalWrite(Relay_2,false);
     pinMode(interrupcion ,INPUT);
+    delay(2000);
     ID_Local=EEPROM.read(0x00);
     ID_Master=EEPROM.read(0x01);
    
@@ -86,7 +104,7 @@ void loop()
       
     if(!digitalRead(interrupcion))            // check if data coming
     
-    {     noInterrupts();               // Suspende las interrupciones
+    {    // noInterrupts();               // Suspende las interrupciones
           CAN.readMsgBuf(&len, buf);    // leo el mensaje recibido
           canId = CAN.getCanId();       // almaceno el Id del emisor
           ID_Local= EEPROM.read(0x00);    // leo el Id del receptor de la EEPROM
@@ -135,7 +153,7 @@ void loop()
             }
      
        }
-        interrupts();                 // Autoriza las interrupciones
+      //  interrupts();                 // Autoriza las interrupciones
       }
         
     }
@@ -182,19 +200,17 @@ void loop()
  }
 
  void Led_CanUpOK(){
-           digitalWrite(LED,true);
-           delay(100);
            digitalWrite(LED,false);
            delay(100);
            digitalWrite(LED,true);
            delay(100);
            digitalWrite(LED,false);
+           delay(100);
+           digitalWrite(LED,true);
   
  }
 
  void Led_CanFail(){
-     digitalWrite(LED,true);
-           delay(200);
            digitalWrite(LED,false);
            delay(200);
            digitalWrite(LED,true);
@@ -202,8 +218,10 @@ void loop()
            digitalWrite(LED,false);
            delay(200);
            digitalWrite(LED,true);
+           delay(200);
+           digitalWrite(LED,false);
            delay(1000);
-           digitalWrite(LED,false);
+           digitalWrite(LED,true);
            delay(200);
   }
 
