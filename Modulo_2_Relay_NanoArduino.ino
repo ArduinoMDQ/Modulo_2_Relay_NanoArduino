@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 //#include <TimerOne.h>
 #include <SPI.h>
 #include <mcp_can.h>
@@ -7,8 +10,13 @@
 const int SPI_CS_PIN = 10;//pin 9 en modulo 1 relay Atmega328p
 const int interrupcion = 9;//pin 5 en modulo 1 relay Atmega328p
 const int LED=2;//pin 8 en modulo 1 relay Atmega328p
+<<<<<<< HEAD
 const int Relay_1=A0;//A4;//digital
 const int Relay_2=A2;//A5;//digital
+=======
+const int Relay_1=A0;//digital
+const int Relay_2=A2;//digital
+>>>>>>> origin/master
 const int Acs712_1=A6;//solo ADC
 const int Acs712_2=A7;//solo ADC
 
@@ -43,32 +51,80 @@ MCP_CAN CAN(SPI_CS_PIN);                                    // Set CS pin
 void setup()
 {
     Serial.begin(9600);
+<<<<<<< HEAD
   // EEPROM.begin(0x1024);
+=======
+   
+<<<<<<< HEAD
+  //  Timer1.initialize(3000000);         // Dispara cada 250 ms
+  //  Timer1.attachInterrupt(ISR_Blink); // Activa la interrupcion y la asocia a ISR_Blink
+  //  noInterrupts();               // Suspende las interrupciones
+    EEPROM.write(0x00,ID_Local);// escribe en la dir 0x00 el id del dispositivo LOCAL
+    EEPROM.write(0x01,ID_Master);// escribe en la dir 0x01 el id del MASTER controlador
+=======
+>>>>>>> origin/master
    //Timer1.initialize(3000000);         // Dispara cada 250 ms
    // Timer1.attachInterrupt(ISR_Blink); // Activa la interrupcion y la asocia a ISR_Blink
    // noInterrupts();             // Suspende las interrupciones
   
+<<<<<<< HEAD
    // ID_Local= EEPROM.read(0x00);    // almaceno el Id del receptor
    // ID_Master= EEPROM.read(0x01);
+=======
+>>>>>>> origin/master
+    ID_Local= EEPROM.read(0x00);    // almaceno el Id del receptor
+    ID_Master= EEPROM.read(0x01);
+>>>>>>> origin/master
     MsgUpEEprom[0]=ID_Local;
     MsgUpEEprom[1]=ID_Master;
     
     pinMode(LED,OUTPUT);
+<<<<<<< HEAD
+    digitalWrite(LED,true);
+    
+=======
    // digitalWrite(LED,false);
+>>>>>>> origin/master
     pinMode(Relay_1,OUTPUT);
     pinMode(Relay_2,OUTPUT);
     pinMode(Acs712_1,INPUT);
     pinMode(Acs712_2,INPUT);
+<<<<<<< HEAD
     digitalWrite(Relay_1,false);
     delay(100);
     digitalWrite(Relay_1,true);
     delay(100);
     digitalWrite(Relay_2,false);
     delay(100);
+=======
+    delay(100);
+    digitalWrite(Relay_1,false);
+    digitalWrite(LED,false);
+    delay(500);
+    digitalWrite(Relay_1,true);
+    digitalWrite(LED,true);
+    delay(1000);
+>>>>>>> origin/master
     digitalWrite(Relay_2,true);
+    digitalWrite(LED,false);
+    delay(250);
+    digitalWrite(LED,true);
+   
+    delay(200);
+    digitalWrite(LED,false);
+ 
+    delay(250);
+    digitalWrite(LED,true);
+    digitalWrite(Relay_2,false);
     pinMode(interrupcion ,INPUT);
+<<<<<<< HEAD
    // ID_Local=EEPROM.read(0x00);
   //  ID_Master=EEPROM.read(0x01);
+=======
+    delay(2000);
+    ID_Local=EEPROM.read(0x00);
+    ID_Master=EEPROM.read(0x01);
+>>>>>>> origin/master
    
 START_INIT:
 
@@ -224,19 +280,39 @@ void loop()
  }
 
  void Led_CanUpOK(){
+<<<<<<< HEAD
           
+=======
+<<<<<<< HEAD
+=======
+           digitalWrite(LED,true);
+           delay(200);
+>>>>>>> origin/master
+>>>>>>> origin/master
            digitalWrite(LED,false);
            delay(200);
            digitalWrite(LED,true);
            delay(200);
            digitalWrite(LED,false);
+<<<<<<< HEAD
+           delay(100);
+           digitalWrite(LED,true);
+  
+=======
            delay(200);
+<<<<<<< HEAD
             digitalWrite(LED,true);
            delay(200);
  }
 
  void Led_CanFail(){
          
+=======
+>>>>>>> origin/master
+ }
+
+ void Led_CanFail(){
+>>>>>>> origin/master
            digitalWrite(LED,false);
            delay(200);
            digitalWrite(LED,true);
@@ -244,10 +320,17 @@ void loop()
            digitalWrite(LED,false);
            delay(200);
            digitalWrite(LED,true);
+<<<<<<< HEAD
            delay(100);
            digitalWrite(LED,false);
            delay(1000);
              digitalWrite(LED,true);
+=======
+           delay(200);
+           digitalWrite(LED,false);
+           delay(1000);
+           digitalWrite(LED,true);
+>>>>>>> origin/master
            delay(200);
   }
 
